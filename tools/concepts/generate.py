@@ -29,6 +29,7 @@ import base64
 import json
 import mimetypes
 import os
+import ssl
 import sys
 import time
 import urllib.error
@@ -37,7 +38,12 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 API = "https://generativelanguage.googleapis.com/v1beta"
-DEFAULT_MODEL = "gemini-2.5-flash-image"
+DEFAULT_MODEL = "gemini-3.1-flash-image"
+
+# python.org builds on macOS ship without CA certs; fall back to the system bundle.
+SSL_CTX = ssl.create_default_context()
+if not SSL_CTX.get_ca_certs() and Path("/etc/ssl/cert.pem").exists():
+    SSL_CTX = ssl.create_default_context(cafile="/etc/ssl/cert.pem")
 
 
 def load_env():
@@ -58,7 +64,7 @@ def request(method, path, key, body=None):
         headers={"x-goog-api-key": key, "Content-Type": "application/json"},
     )
     try:
-        with urllib.request.urlopen(req, timeout=300) as resp:
+        with urllib.request.urlopen(req, timeout=300, context=SSL_CTX) as resp:
             return json.load(resp)
     except urllib.error.HTTPError as e:
         sys.exit(f"HTTP {e.code} from {path}: {e.read().decode(errors='replace')[:2000]}")
