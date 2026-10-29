@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" font-family="Helvetica, Arial, sans-serif">
+  <!--
+    Room layout v1: hotspot placement for the home room.
+    Canvas = 16:9 room (0..900) + legend strip (900..1000).
+    Dashed box = 4:3 safe area (x 200..1400). Everything tappable lives inside it.
+    Fill colour = status: slice1 / next / later / ambient / system.
+  -->
+  <defs>
+    <style>
+      .wall { fill: #F6E9CF; stroke: #b9a27c; stroke-width: 2; }
+      .side { fill: #EAD9B8; stroke: #b9a27c; stroke-width: 2; }
+      .floor { fill: #C9D9B5; stroke: #9bb08a; stroke-width: 2; }
+      .furn { fill: #D9A05B; fill-opacity: .35; stroke: #8a5a26; stroke-width: 2; }
+      .hot { stroke-width: 3; fill-opacity: .55; }
+      .slice1 { fill: #3D7BD9; stroke: #1f4f99; }
+      .next { fill: #2F9C95; stroke: #1b625d; }
+      .later { fill: #F4C542; stroke: #a7811a; }
+      .ambient { fill: #ffffff; stroke: #8a8a8a; stroke-dasharray: 6 4; }
+      .system { fill: #D9734E; stroke: #8e3f22; }
+      .lbl { font-size: 15px; fill: #2b2420; font-weight: 600; }
+      .ar { font-size: 16px; fill: #2b2420; direction: rtl; unicode-bidi: plaintext; }
+      .note { font-size: 13px; fill: #6b5d50; }
+      .safe { fill: none; stroke: #c0392b; stroke-width: 2.5; stroke-dasharray: 14 8; }
+    </style>
+  </defs>
+
+  <!-- Room shell (dollhouse view: back wall + angled side walls + floor) -->
+  <rect x="0" y="0" width="1600" height="900" fill="#efe6d6"/>
+  <polygon class="side" points="0,0 260,60 260,560 0,900"/>
+  <polygon class="side" points="1600,0 1340,60 1340,560 1600,900"/>
+  <polygon class="floor" points="0,900 260,560 1340,560 1600,900"/>
+  <rect class="wall" x="260" y="60" width="1080" height="500"/>
+
+  <!-- Rug -->
+  <ellipse cx="800" cy="745" rx="390" ry="105" fill="#D9734E" fill-opacity=".25" stroke="#D9734E" stroke-width="2"/>
+
+  <!-- Furniture (non-interactive bodies) -->
+  <rect class="furn" x="270" y="130" width="200" height="430" rx="6"/>       <!-- bookshelf -->
+  <line x1="270" y1="260" x2="470" y2="260" stroke="#8a5a26" stroke-width="3"/>
+  <line x1="270" y1="390" x2="470" y2="390" stroke="#8a5a26" stroke-width="3"/>
+  <rect class="furn" x="960" y="440" width="320" height="130" rx="8"/>        <!-- cabinet -->
+  <rect class="furn" x="680" y="660" width="240" height="50" rx="10"/>        <!-- low table -->
+  <rect class="furn" x="1060" y="720" width="250" height="70" rx="12"/>       <!-- bench -->
+  <rect x="215" y="610" width="300" height="120" rx="40" fill="#D9734E" fill-opacity=".35" stroke="#8e3f22" stroke-width="2"/> <!-- majlis cushions -->
+
+  <!-- Window with mashrabiya + curtains (ambient: light follows time of day) -->
+  <rect class="hot ambient" x="640" y="110" width="320" height="320" rx="6"/>
+  <rect x="610" y="100" width="40" height="350" rx="10" fill="#2F9C95" fill-opacity=".6"/>
+  <rect x="950" y="100" width="40" height="350" rx="10" fill="#2F9C95" fill-opacity=".6"/>
+  <text class="lbl" x="800" y="255" text-anchor="middle">Window + mashrabiya</text>
+  <text class="ar" x="800" y="278" text-anchor="middle">النافذة</text>
+  <text class="note" x="800" y="300" text-anchor="middle">light follows local time</text>
+
+  <!-- Back-wall objects -->
+  <rect class="hot slice1" x="490" y="150" width="105" height="95" rx="6"/>
+  <text class="lbl" x="542" y="190" text-anchor="middle">Family photo</text>
+  <text class="ar" x="542" y="212" text-anchor="middle">صورة العائلة</text>
+  <text class="note" x="542" y="232" text-anchor="middle">→ profiles</text>
+
+  <rect class="hot later" x="1010" y="140" width="110" height="130" rx="6"/>
+  <text class="lbl" x="1065" y="190" text-anchor="middle">Calligraphy</text>
+  <text class="ar" x="1065" y="212" text-anchor="middle">لوحة الخط</text>
+  <text class="note" x="1065" y="232" text-anchor="middle">→ تعلم الصلاة</text>
+
+  <circle class="hot ambient" cx="1210" cy="165" r="42"/>
+  <text class="lbl" x="1210" y="170" text-anchor="middle">Clock</text>
+  <rect class="hot ambient" x="1170" y="230" width="85" height="100" rx="4"/>
+  <text class="lbl" x="1212" y="275" text-anchor="middle">Hijri</text>
+  <text class="lbl" x="1212" y="295" text-anchor="middle">calendar</text>
+
+  <!-- Bookshelf objects -->
+  <rect class="hot ambient" x="282" y="160" width="100" height="95" rx="4"/>
+  <text class="lbl" x="332" y="212" text-anchor="middle">Books</text>
+  <rect class="hot later" x="395" y="135" width="65" height="120" rx="4"/>
+  <text class="lbl" x="427" y="185" text-anchor="middle">Big</text>
+  <text class="lbl" x="427" y="203" text-anchor="middle">Ben</text>
+  <text class="note" x="427" y="222" text-anchor="middle">كلمات</text>
+
+  <rect class="hot later" x="285" y="290" width="80" height="95" rx="4"/>
+  <text class="lbl" x="325" y="335" text-anchor="middle">Trophy</text>
+  <text class="note" x="325" y="355" text-anchor="middle">اختبر</text>
+  <rect class="hot next" x="375" y="295" width="90" height="90" rx="4"/>
+  <text class="lbl" x="420" y="335" text-anchor="middle">Abacus</text>
+  <text class="note" x="420" y="355" text-anchor="middle">احسب والعب</text>
+
+  <rect class="hot ambient" x="285" y="420" width="175" height="130" rx="4"/>
+  <text class="lbl" x="372" y="480" text-anchor="middle">Plant · toys</text>
+
+  <!-- Cabinet: TV + console -->
+  <rect class="hot ambient" x="990" y="330" width="160" height="105" rx="8"/>
+  <text class="lbl" x="1070" y="380" text-anchor="middle">TV (decor)</text>
+  <rect class="hot later" x="1165" y="375" width="105" height="60" rx="8"/>
+  <text class="lbl" x="1217" y="402" text-anchor="middle">Console</text>
+  <text class="note" x="1217" y="422" text-anchor="middle">submarine</text>
+
+  <!-- Door on right side wall -->
+  <polygon class="hot system" points="1290,110 1385,80 1385,640 1290,590"/>
+  <text class="lbl" x="1337" y="330" text-anchor="middle">Door</text>
+  <text class="ar" x="1337" y="352" text-anchor="middle">الباب</text>
+  <text class="note" x="1337" y="372" text-anchor="middle">→ parents</text>
+  <text class="note" x="1337" y="390" text-anchor="middle">(gate)</text>
+
+  <!-- Floor objects -->
+  <rect class="hot slice1" x="700" y="565" width="95" height="95" rx="12"/>
+  <text class="lbl" x="747" y="605" text-anchor="middle">Letter</text>
+  <text class="lbl" x="747" y="623" text-anchor="middle">cube أ١</text>
+  <text class="note" x="747" y="643" text-anchor="middle">حروف وأرقام</text>
+
+  <rect class="hot next" x="810" y="570" width="100" height="90" rx="12"/>
+  <text class="lbl" x="860" y="608" text-anchor="middle">Camel toy</text>
+  <text class="note" x="860" y="628" text-anchor="middle">حيوانات مرحة</text>
+
+  <rect class="hot ambient" x="400" y="645" width="100" height="70" rx="10"/>
+  <text class="lbl" x="450" y="676" text-anchor="middle">Dallah</text>
+  <text class="note" x="450" y="695" text-anchor="middle">tray</text>
+
+  <ellipse class="hot ambient" cx="290" cy="650" rx="60" ry="38"/>
+  <text class="lbl" x="290" y="655" text-anchor="middle">Cat</text>
+
+  <rect class="hot slice1" x="1120" y="530" width="130" height="230" rx="50"/>
+  <text class="lbl" x="1185" y="630" text-anchor="middle">نبيه</text>
+  <text class="lbl" x="1185" y="650" text-anchor="middle">on bench</text>
+  <text class="note" x="1185" y="670" text-anchor="middle">tour · help</text>
+
+  <!-- Kids appear contextually (walk in, sit on rug); not fixed hotspots -->
+  <text class="note" x="800" y="830" text-anchor="middle">سارة و يوسف walk in / play on the rug contextually (not fixed hotspots)</text>
+
+  <!-- 4:3 safe area -->
+  <rect class="safe" x="200" y="0" width="1200" height="900"/>
+  <text x="210" y="890" font-size="14" fill="#c0392b">4:3 safe area: everything tappable lives here · outside = decor for wide screens</text>
+
+  <!-- Legend -->
+  <rect x="0" y="900" width="1600" height="100" fill="#fbf7f0"/>
+  <g transform="translate(30,935)">
+    <rect class="hot slice1" width="28" height="28" rx="4"/><text class="lbl" x="38" y="20">Slice 1 (letters, profiles, host)</text>
+    <rect class="hot next" x="330" width="28" height="28" rx="4"/><text class="lbl" x="368" y="20">Next (animals, math)</text>
+    <rect class="hot later" x="600" width="28" height="28" rx="4"/><text class="lbl" x="638" y="20">Later (asleep until built)</text>
+    <rect class="hot system" x="890" width="28" height="28" rx="4"/><text class="lbl" x="928" y="20">System (parents)</text>
+    <rect class="hot ambient" x="1120" width="28" height="28" rx="4"/><text class="lbl" x="1158" y="20">Ambient tap reaction</text>
+  </g>
+  <text class="note" x="30" y="988">Room layout v1 · canvas 1600×900 (16:9) · minimum tap target ≈ 80 px at this scale</text>
+</svg>

@@ -1,0 +1,40 @@
+# Research material: Sakhr's copyrighted disc contents and downloaded videos.
+# Never commit this folder (the repo is public).
+/reference/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Blender
+*.blend1
+*.blend2
+
+# Unity (project lives in /unity)
+/unity/[Ll]ibrary/
+/unity/[Tt]emp/
+/unity/[Oo]bj/
+/unity/[Bb]uild/
+/unity/[Bb]uilds/
+/unity/[Ll]ogs/
+/unity/[Uu]ser[Ss]ettings/
+/unity/[Mm]emoryCaptures/
+/unity/*.csproj
+/unity/*.sln
+/unity/*.slnx
+/unity/.vs/
+/unity/.utmp/
+
+# Generated concept candidates that were not picked (picked ones are copied to art/concepts/<batch>/picked/)
+/art/concepts/*/raw/
