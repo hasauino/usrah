@@ -184,7 +184,7 @@ def yusuf(kit, loc=(0, 0, 0), rot=(0, 0, 0)):
     return root
 
 
-def nabeeh(kit, loc=(0, 0, 0), rot=(0, 0, 0), face="screen", pose="stand", book=True):
+def nabeeh(kit, loc=(0, 0, 0), rot=(0, 0, 0), face="painted", pose="stand", book=True):
     """The host. Round head on a ball body, so he can curl up and roll in."""
     shell = kit.metal("#DDE3E8") if not kit.wood else kit.paint("#E6E4DD")
     joint = kit.metal("#AEB7BF") if not kit.wood else kit.natural("#D9B98A")

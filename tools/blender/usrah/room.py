@@ -4,6 +4,7 @@ The layout's pixel coordinates are mapped to the world by wall() and floor(), so
 3D room and the hotspot sketch stay in register. Tappable objects are named groups.
 """
 import math
+from pathlib import Path
 
 import bpy
 
@@ -35,6 +36,7 @@ SKY = "#3D7BD9"
 SUN = "#F4C542"
 BRASS = "#D6A83F"
 RED = "#C43D3D"
+AMIRI = Path(__file__).resolve().parents[3] / "fonts" / "Amiri-Bold.ttf"
 BOOK_COLORS = [RED, TEAL, SUN, SKY, TERRACOTTA, SAGE, "#7A5FA8"]
 
 
@@ -215,20 +217,15 @@ def _family_photo(kit):
 
 
 def _calligraphy(kit):
-    """Abstract calligraphic strokes: an homage, not a legible word."""
+    """The word الله, using the font's dedicated ligature so it's written correctly."""
     with group("calligraphy"):
-        at, (w, h) = _frame(kit, "calligraphy", 1010, 140, 1120, 270, wood=BRASS if not kit.wood else DARK_WOOD)
+        at, (w, h) = _frame(kit, "calligraphy", 1010, 140, 1120, 270, wood=BRASS)
         rbox("cal_ground", (w, .012, h), .003, kit.paint("#1F4E79"), (at[0], at[1] - .025, at[2]))
         gold = kit.metal(SUN)
-        y = at[1] - .036
-        cx, cz = at[0], at[2]
-        tube("stroke_alef", [(cx - .13, y, cz - .19), (cx - .14, y, cz), (cx - .1, y, cz + .2)],
-             [.012, .022, .009], gold)
-        tube("stroke_sweep", [(cx - .2, y, cz - .13), (cx - .03, y, cz - .21), (cx + .15, y, cz - .13),
-                              (cx + .19, y, cz + .02)], [.008, .02, .018, .008], gold)
-        tube("stroke_curl", [(cx + .0, y, cz + .19), (cx + .05, y, cz + .02), (cx + .13, y, cz + .08),
-                             (cx + .08, y, cz + .17)], [.008, .018, .014, .006], gold)
-        sphere("stroke_dot", (.024, .006, .024), gold, (cx + .03, y, cz - .08), seg=16)
+        # The ligature's marks sit high in its em box, so centre it by eye
+        size = w * 1.9
+        glyph("allah", "\uFDF2", size, .004, gold, (at[0], at[1] - .036, at[2] - size * .104), (90, 0, 0),
+              font=str(AMIRI))
 
 
 def _clock(kit):
@@ -439,7 +436,7 @@ def _door(kit):
     """The room door on the right wall. Behind it: the parents' area."""
     wood = kit.natural(DARK_WOOD if kit.wood else HONEY)
     panel = kit.natural(HONEY if kit.wood else PALE_WOOD)
-    y0, y1 = 3.05, 3.85
+    y0, y1 = 3.21, 3.92
     w = y1 - y0
     h = 2.12
     x = WIDTH / 2 - .02

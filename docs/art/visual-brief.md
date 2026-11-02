@@ -1,4 +1,6 @@
-# Visual brief: concept batch 1
+# Visual brief
+
+**Locked 2026-11-02:** style A (soft vinyl everywhere), painted eyes for نبيه, the cast and room as rendered in batch 1. The sections on directions (b) and (c) are kept as a record.
 
 The single source every concept prompt is written against, and the standard every concept is judged by. The decisions behind it are in `docs/DESIGN.md`.
 
@@ -57,7 +59,7 @@ Late-afternoon sun through a **mashrabiya screen**, casting soft geometric light
 
 **Contents** (position is given in `art/concepts/room-layout.svg`; that layout wins over the image model):
 
-- **Back wall:** a large window with a wooden mashrabiya screen and teal curtains; a framed abstract calligraphy piece (a swirl of strokes, no legible text); a round clock; a wall calendar; a family photo frame.
+- **Back wall:** a large window with a wooden mashrabiya screen and teal curtains; a framed calligraphy piece reading **الله**; a round clock; a wall calendar; a family photo frame.
 - **Left:** a bookshelf with chunky books, a Big Ben model, a trophy and an abacus; a potted plant.
 - **Right:** a low wooden cabinet with a small TV and a game console; the room door at the far right.
 - **Floor:**
@@ -79,7 +81,7 @@ A redesign of the original host that keeps his recognisable traits:
 
 - **Body:** a round, silver-white robot about knee-height to an adult. A **big round head** (about 45% of height) on a **round ball body**, so he can **curl into a ball and roll**.
 - **Cap and glasses:** a **sky-blue baseball cap** with a small sunflower-yellow eight-point-star emblem, and **big round glasses** (thick frames, flat lenses).
-- **Face:** on a dark screen-like face plate, shown as glowing simple shapes, which suits a robot and is easy to texture-swap. Alternatively, painted eyes on a light face.
+- **Face:** painted eyes and mouth on his pale head, with dark round glasses (locked in batch 1).
 - **Chest:** a small **keypad panel** of 3×3 rounded buttons in pastel colours.
 - **Limbs:** short stubby arms with white mitten hands; short legs with **blue-and-white sneakers**.
 - **Personality:** warm, curious, a bit of a bookworm. He always carries a small red book.

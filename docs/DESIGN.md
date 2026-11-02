@@ -34,9 +34,9 @@ Decided in the design interview, 2026-10-25 to 2026-10-29.
 |---|---|---|
 | Q11 | Cast | A host, two kids and a pet, reused across games. |
 | Q18 | Identity | **نبيه** (robot host), **سارة** (girl, 8), **يوسف** (boy, 5), a small **cat**. No hijab on Sara by default; modest clothing. |
-| Q18b | Host look | Keeps the original's recognisable traits (blue cap, round glasses, keypad chest, rolls in as a ball and unfolds) in a fresh design. |
+| Q18b | Host look | Keeps the original's recognisable traits (blue cap, round glasses, keypad chest, rolls in as a ball and unfolds) in a fresh design. **Painted eyes** on a pale face, chosen over a glowing screen face. |
 | Q17 | Setting | A contemporary Arab family home with tasteful cultural cues (mashrabiya, majlis cushions, dallah, calligraphy, Arabic books). |
-| Q16 | Style exploration | (a) soft vinyl toy, (b) wooden toy / Montessori, (c) a mix: vinyl characters in a wooden dollhouse room. |
+| Q16 | Style | **Locked 2026-11-02: soft vinyl everywhere** (direction A, the `Vinyl` kit), chosen from renders in the batch 1 review. |
 | Q7 | Pipeline | Asset first: **concepts → Blender → Unity**. |
 | Q8 | Concepts | **Changed 2026-11-02:** concepts are Cycles renders of the scripted Blender models (`tools/blender/`), plus a vector room-layout sketch. Originally an AI image model, dropped because Gemini's API needs prepaid credit (no free-tier image generation). Everything approved is buildable by construction. |
 | Q19 | Image API | **Not used.** `tools/concepts/generate.py` and `art/concepts/batch-01/prompts.json` stay in the repo in case paid image generation is wanted later. |
@@ -62,14 +62,14 @@ Decided in the design interview, 2026-10-25 to 2026-10-29.
 - **WebGPU is not targeted yet.** WebGL2 stays the default.
 - **Git LFS quota:** the free plan gives 10 GiB of storage and 10 GiB of bandwidth a month, and CI checkouts count. Cache LFS in Actions, and don't commit unpicked concept candidates (`art/concepts/*/raw/` is ignored).
 
-## Original → new room map (proposal; finalised with the room layout concept)
+## Original → new room map (locked; placement in `art/concepts/room-layout.svg`)
 
 | Room object | Opens | Status |
 |---|---|---|
 | Letter cube (أ ١) | حروف وأرقام | Slice 1 |
 | Camel toy | حيوانات مرحة | Next |
 | Abacus | احسب والعب | Next |
-| Calligraphy frame | تعلم الصلاة | Later |
+| Frame reading **الله** (Amiri ligature, as the original's frame did) | تعلم الصلاة | Later |
 | Trophy | اختبر معلوماتك | Later |
 | Big Ben model | كلمات ومعاني | Later |
 | Game console | Submarine game (original) | Later |

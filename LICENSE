@@ -1,13 +1,16 @@
 This repository is dual-licensed:
 
-1. SOURCE CODE (everything except the paths listed in section 2) is licensed
-   under the MIT License below.
+1. SOURCE CODE (everything except the paths listed in sections 2 and 3) is
+   licensed under the MIT License below.
 
 2. ART, AUDIO AND CHARACTERS: everything under `art/`, all 3D models,
    textures, images, audio and voice recordings, and the characters and their
    names (including نبيه, سارة and يوسف) are Copyright (c) 2026 Hassan Umari.
    All rights reserved. They may not be copied, modified or redistributed
    without written permission.
+
+3. FONTS: everything under `fonts/` keeps its own licence, stated in the
+   matching file there (SIL Open Font License 1.1).
 
 This project is an independent re-imagining inspired by "مجموعة برامج الأسرة"
 (Sakhr Software, 1994-1996). It contains no code, art, audio or text from the
