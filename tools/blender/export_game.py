@@ -14,7 +14,7 @@ import bpy
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from usrah import cast, nabeeh, room, rug_art, shapes  # noqa: E402
+from usrah import cast, room, rug_art, shapes  # noqa: E402
 from usrah.materials import kits  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -83,7 +83,7 @@ def main():
     textures.mkdir(parents=True, exist_ok=True)
     shutil.copy(rug_art.ensure_texture(), textures / "rug.png")
     export("room", lambda c, r: room.build(c, r, characters=False, lights=False), ROOM_DETAIL)
-    export("nabeeh", lambda c, r: nabeeh.nabeeh(c, pose="sit"), CHARACTER_DETAIL)
+    export("nabeeh", lambda c, r: cast.nabeeh(c, pose="sit"), CHARACTER_DETAIL)
     export("cat", lambda c, r: cast.cat(c, pose="sleep"), CHARACTER_DETAIL)
     export("sara", lambda c, r: cast.sara(c), CHARACTER_DETAIL)
     export("yusuf", lambda c, r: cast.yusuf(c), CHARACTER_DETAIL)

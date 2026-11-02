@@ -112,15 +112,6 @@ class _Kit:
         return self._get(("plaster", hex_color),
                          lambda: _principled(f"plaster {hex_color}", linear(hex_color), rough=.85)[0])
 
-    def lens(self):
-        """Clear glasses lens."""
-        def build():
-            mat, bsdf = _principled("lens", (1, 1, 1, 1), rough=.03)
-            bsdf.inputs["Transmission Weight"].default_value = 1.0
-            bsdf.inputs["IOR"].default_value = 1.18
-            return mat
-        return self._get(("lens",), build)
-
     def glass(self, hex_color):
         """Glossy dark screen."""
         return self._get(("glass", hex_color),

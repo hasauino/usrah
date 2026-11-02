@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UIElements;
 
 namespace Usrah.EditorTools
 {
@@ -16,6 +17,14 @@ namespace Usrah.EditorTools
         const string LightingAsset = "Assets/Scenes/HomeLighting.lighting";
         const int CharacterLayer = 6;
         const float RoomHeight = 2.78f;
+        const string PanelPath = "Assets/UI/Panel.asset";
+
+        // Objects a tap can land on. They aren't static-batched, because they bounce or turn.
+        static readonly string[] Hotspots =
+        {
+            "letter_cube", "camel_toy", "abacus", "calligraphy", "trophy", "big_ben", "console", "family_photo", "door",
+            "clock", "calendar", "plant", "dallah_tray", "books", "tv", "stacking_rings",
+        };
 
         // Matches tools/blender/usrah/room.py: camera straight along the room, lens shift for the horizon
         const float BackY = 4f, CamDist = 8.64f, CamHeight = 2.3f, Lens = 35f;
@@ -30,15 +39,18 @@ namespace Usrah.EditorTools
 
             var room = Spawn("room");
             room.name = "Room";
-            Report(room);
 
             UseUnlitForGlow(room);
             MarkRoomStatic(room);
-            Place("nabeeh", room, "spot_host", 8f);
-            Place("cat", room, "spot_cat", 20f);
+            var nabeeh = Place("nabeeh", room, "spot_host", 8f);
+            var cat = Place("cat", room, "spot_cat", 20f);
 
             MakeCamera();
             MakeLights();
+            MakeHotspots(room.transform);
+            AddHotspot(nabeeh, "nabeeh");
+            AddHotspot(cat, "cat");
+            MakeApp(room.transform, nabeeh, cat);
 
             EditorSceneManager.SaveScene(scene, ScenePath);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
@@ -75,23 +87,6 @@ namespace Usrah.EditorTools
             }
         }
 
-        /// <summary>See-through glasses lens: nearly clear, with a soft highlight.</summary>
-        static Material LensMaterial()
-        {
-            var lens = SavedMaterial("lens", "Universal Render Pipeline/Lit", new Color(1f, 1f, 1f, .12f));
-            lens.SetFloat("_Surface", 1f);
-            lens.SetFloat("_Blend", 0f);
-            lens.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
-            lens.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            lens.SetFloat("_ZWrite", 0f);
-            lens.SetFloat("_Smoothness", .9f);
-            lens.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
-            lens.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-            lens.SetOverrideTag("RenderType", "Transparent");
-            EditorUtility.SetDirty(lens);
-            return lens;
-        }
-
         static Material SavedMaterial(string name, string shader, Color? color)
         {
             var path = Materials + name + ".mat";
@@ -105,7 +100,7 @@ namespace Usrah.EditorTools
             return material;
         }
 
-        static void Place(string model, GameObject room, string spot, float yaw)
+        static Transform Place(string model, GameObject room, string spot, float yaw)
         {
             var target = room.GetComponentsInChildren<Transform>().First(t => t.name == spot);
             // A wrapper at the spot, so the model's own root transform stays untouched
@@ -116,24 +111,53 @@ namespace Usrah.EditorTools
             character.name = model;
             character.transform.SetParent(holder, false);
             foreach (var t in character.GetComponentsInChildren<Transform>()) t.gameObject.layer = CharacterLayer;
-            foreach (var renderer in character.GetComponentsInChildren<Renderer>())
-                if (renderer.sharedMaterial != null && renderer.sharedMaterial.name == "lens")
-                {
-                    renderer.sharedMaterial = LensMaterial();
-                    renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                }
+            return holder;
         }
 
-        static void Report(GameObject room)
+        static void MakeHotspots(Transform room)
         {
-            var bounds = new Bounds(room.transform.position, Vector3.zero);
-            foreach (var r in room.GetComponentsInChildren<Renderer>()) bounds.Encapsulate(r.bounds);
-            Debug.Log($"USRAH room bounds {bounds}");
-            foreach (var name in new[] { "wall_left", "wall_right", "wall_below", "spot_host", "low_table" })
+            foreach (var id in Hotspots)
+                AddHotspot(room.GetComponentsInChildren<Transform>().First(t => t.name == id), id);
+        }
+
+        /// <summary>A generous box around the object, in world axes, on a child so it doesn't move
+        /// when the object bounces.</summary>
+        static void AddHotspot(Transform target, string id)
+        {
+            target.gameObject.AddComponent<Usrah.Hotspot>().id = id;
+            var renderers = target.GetComponentsInChildren<Renderer>();
+            var bounds = renderers[0].bounds;
+            foreach (var r in renderers) bounds.Encapsulate(r.bounds);
+            var hit = new GameObject("hit").transform;
+            hit.SetParent(target, false);
+            hit.SetPositionAndRotation(bounds.center, Quaternion.identity);
+            var lossy = hit.lossyScale;
+            var box = hit.gameObject.AddComponent<BoxCollider>();
+            var size = Vector3.Max(bounds.size * 1.06f, new Vector3(.22f, .22f, .22f));
+            box.size = new Vector3(size.x / lossy.x, size.y / lossy.y, size.z / lossy.z);
+        }
+
+        static void MakeApp(Transform room, Transform nabeeh, Transform cat)
+        {
+            var settings = AssetDatabase.LoadAssetAtPath<PanelSettings>(PanelPath);
+            if (settings == null)
             {
-                var t = room.GetComponentsInChildren<Transform>().FirstOrDefault(x => x.name == name);
-                Debug.Log($"USRAH {name} at {(t ? t.position.ToString("F2") : "missing")}");
+                settings = ScriptableObject.CreateInstance<PanelSettings>();
+                AssetDatabase.CreateAsset(settings, PanelPath);
             }
+            settings.scaleMode = PanelScaleMode.ScaleWithScreenSize;
+            settings.referenceResolution = new Vector2Int(1600, 900);
+            settings.screenMatchMode = PanelScreenMatchMode.MatchWidthOrHeight;
+            settings.match = .5f;
+            settings.themeStyleSheet = AssetDatabase.LoadAssetAtPath<ThemeStyleSheet>("Assets/UI/Runtime.tss");
+            EditorUtility.SetDirty(settings);
+
+            var go = new GameObject("App");
+            go.AddComponent<UIDocument>().panelSettings = settings;
+            var app = go.AddComponent<Usrah.App>();
+            app.room = room;
+            app.nabeeh = nabeeh;
+            app.cat = cat;
         }
 
         static void MakeCamera()
@@ -220,7 +244,8 @@ namespace Usrah.EditorTools
             foreach (var renderer in room.GetComponentsInChildren<MeshRenderer>())
             {
                 var go = renderer.gameObject;
-                var flags = StaticEditorFlags.BatchingStatic;
+                var moves = go.GetComponentsInParent<Transform>().Any(t => Hotspots.Contains(t.name));
+                var flags = moves ? 0 : StaticEditorFlags.BatchingStatic;
                 var size = renderer.bounds.size;
                 // Tiny parts (lattice beads, keypad dots) aren't worth lightmap space
                 if (Mathf.Max(size.x, size.y, size.z) > .08f) flags |= StaticEditorFlags.ContributeGI;

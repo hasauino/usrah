@@ -210,8 +210,14 @@ def _frame(kit, name, px0, py0, px1, py1, wood=HONEY, y=None):
     return at, (w - .09, h - .09)
 
 
+def _wall_centre(px0, py0, px1, py1):
+    x0, z1 = wall(px0, py0)
+    x1, z0 = wall(px1, py1)
+    return ((x0 + x1) / 2, BACK_Y - .03, (z0 + z1) / 2)
+
+
 def _family_photo(kit):
-    with group("family_photo"):
+    with group("family_photo", pivot=_wall_centre(490, 150, 595, 245)):
         at, (w, h) = _frame(kit, "photo", 490, 150, 595, 245)
         rbox("photo_mat", (w, .012, h), .003, kit.paint("#FBF4E2"), (at[0], at[1] - .025, at[2]))
         rbox("photo_sky", (w * .86, .006, h * .78), .002, kit.ink("#BFE3E0"), (at[0], at[1] - .031, at[2]))
@@ -224,7 +230,7 @@ def _family_photo(kit):
 
 def _calligraphy(kit):
     """The word الله, using the font's dedicated ligature so it's written correctly."""
-    with group("calligraphy"):
+    with group("calligraphy", pivot=_wall_centre(1010, 140, 1120, 270)):
         at, (w, h) = _frame(kit, "calligraphy", 1010, 140, 1120, 270, wood=BRASS)
         rbox("cal_ground", (w, .012, h), .003, kit.paint("#1F4E79"), (at[0], at[1] - .025, at[2]))
         gold = kit.metal(SUN)
@@ -245,9 +251,11 @@ def _clock(kit):
             sphere(f"tick_{i}", (r * .055, r * .055, .004), kit.ink("#34405A" if i % 3 == 0 else "#A79F8F"),
                    (math.sin(a) * r * .68, math.cos(a) * r * .68, .033), seg=12)
         # 4:30-ish, late afternoon like the light
-        rbox("hand_hour", (r * .1, r * .46, .008), .003, kit.ink("#34405A"),
-             (r * .17, -r * .13, .04), (0, 0, 52))
-        rbox("hand_min", (r * .07, r * .66, .008), .003, kit.ink(RED), (-.0, -r * .28, .047))
+        # Each hand is drawn pointing up from a pivot at the clock's centre; the game turns them
+        with group("hand_hour"):
+            rbox("hand_hour_mesh", (r * .1, r * .46, .008), .003, kit.ink("#34405A"), (0, r * .2, .04))
+        with group("hand_min"):
+            rbox("hand_min_mesh", (r * .07, r * .66, .008), .003, kit.ink(RED), (0, r * .3, .047))
         cyl("hand_pin", r * .07, .016, kit.metal(BRASS), (0, 0, .05))
 
 
@@ -257,7 +265,7 @@ def _calendar(kit):
     w, h = x1 - x0, z1 - z0
     cx, cz = x0 + w / 2, z0 + h / 2
     y = BACK_Y - .02
-    with group("calendar"):
+    with group("calendar", pivot=(cx, y, cz)):
         rbox("cal_board", (w, .02, h), .012, kit.paint("#FBF4E2"), (cx, y, cz))
         rbox("cal_head", (w * .98, .03, h * .24), .012, kit.paint(TEAL), (cx, y - .01, z1 - h * .12))
         rbox("cal_pad", (w * .82, .025, h * .6), .004, kit.paint("#FFFFFF"), (cx, y - .015, z0 + h * .36))
@@ -292,7 +300,7 @@ def _bookshelf(kit):
     # Top shelf: chunky books and the Big Ben model
     _, z_top = wall(0, 260)
     z_top += .03
-    with group("books"):
+    with group("books", (0, 0, 0)):
         x = wall(285, 0)[0]
         for i, (width, height) in enumerate(((.085, .5), (.075, .56), (.09, .46), (.07, .53), (.085, .48), (.075, .55))):
             rbox(f"book_{i}", (width, .25, height), .014, kit.paint(BOOK_COLORS[i % len(BOOK_COLORS)]),
@@ -447,14 +455,16 @@ def _door(kit):
     h = 2.12
     x = WIDTH / 2 - .02
     cy = (y0 + y1) / 2
+    # The slab hinges on the far post, so it can swing open
     with group("door"):
         rbox("door_frame_a", (.05, .08, h + .06), .015, wood, (x, y0 - .03, (h + .06) / 2))
         rbox("door_frame_b", (.05, .08, h + .06), .015, wood, (x, y1 + .03, (h + .06) / 2))
         rbox("door_frame_top", (.05, w + .14, .08), .015, wood, (x, cy, h + .03))
-        rbox("door_slab", (.04, w, h), .012, wood, (x + .004, cy, h / 2))
-        for i, (zc, zh) in enumerate(((.55, .78), (1.54, .86))):
-            rbox(f"door_panel_{i}", (.018, w - .2, zh), .008, panel, (x - .018, cy, zc))
-        sphere("door_knob", .042, kit.metal(BRASS), (x - .05, y0 + .09, 1.02), seg=20)
+        with group("door_leaf", pivot=(x, y1, 0)):
+            rbox("door_slab", (.04, w, h), .012, wood, (x + .004, cy, h / 2))
+            for i, (zc, zh) in enumerate(((.55, .78), (1.54, .86))):
+                rbox(f"door_panel_{i}", (.018, w - .2, zh), .008, panel, (x - .018, cy, zc))
+            sphere("door_knob", .042, kit.metal(BRASS), (x - .05, y0 + .09, 1.02), seg=20)
 
 
 def _rug(kit):

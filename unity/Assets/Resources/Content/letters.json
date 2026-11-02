@@ -1,0 +1,336 @@
+{
+  "letters": [
+    {
+      "letter": "أ",
+      "name": "أَلِف",
+      "word": "أَرْنَب",
+      "image": "rabbit"
+    },
+    {
+      "letter": "ب",
+      "name": "بَاء",
+      "word": "بَطَّة",
+      "image": "duck"
+    },
+    {
+      "letter": "ت",
+      "name": "تَاء",
+      "word": "تُفَّاحَة",
+      "image": "apple"
+    },
+    {
+      "letter": "ث",
+      "name": "ثَاء",
+      "word": "ثَعْلَب",
+      "image": "fox"
+    },
+    {
+      "letter": "ج",
+      "name": "جِيم",
+      "word": "جَمَل",
+      "image": "camel"
+    },
+    {
+      "letter": "ح",
+      "name": "حَاء",
+      "word": "حِصَان",
+      "image": "horse"
+    },
+    {
+      "letter": "خ",
+      "name": "خَاء",
+      "word": "خَرُوف",
+      "image": "sheep"
+    },
+    {
+      "letter": "د",
+      "name": "دَال",
+      "word": "دُبّ",
+      "image": "bear"
+    },
+    {
+      "letter": "ذ",
+      "name": "ذَال",
+      "word": "ذُرَة",
+      "image": "corn"
+    },
+    {
+      "letter": "ر",
+      "name": "رَاء",
+      "word": "رُمَّان",
+      "image": "pomegranate"
+    },
+    {
+      "letter": "ز",
+      "name": "زَاي",
+      "word": "زَرَافَة",
+      "image": "giraffe"
+    },
+    {
+      "letter": "س",
+      "name": "سِين",
+      "word": "سَمَكَة",
+      "image": "fish"
+    },
+    {
+      "letter": "ش",
+      "name": "شِين",
+      "word": "شَمْس",
+      "image": "sun"
+    },
+    {
+      "letter": "ص",
+      "name": "صَاد",
+      "word": "صَارُوخ",
+      "image": "rocket"
+    },
+    {
+      "letter": "ض",
+      "name": "ضَاد",
+      "word": "ضِفْدَع",
+      "image": "frog"
+    },
+    {
+      "letter": "ط",
+      "name": "طَاء",
+      "word": "طَائِرَة",
+      "image": "airplane"
+    },
+    {
+      "letter": "ظ",
+      "name": "ظَاء",
+      "word": "ظَرْف",
+      "image": "envelope"
+    },
+    {
+      "letter": "ع",
+      "name": "عَيْن",
+      "word": "عُصْفُور",
+      "image": "bird"
+    },
+    {
+      "letter": "غ",
+      "name": "غَيْن",
+      "word": "غَيْمَة",
+      "image": "cloud"
+    },
+    {
+      "letter": "ف",
+      "name": "فَاء",
+      "word": "فَرَاشَة",
+      "image": "butterfly"
+    },
+    {
+      "letter": "ق",
+      "name": "قَاف",
+      "word": "قِطَّة",
+      "image": "cat"
+    },
+    {
+      "letter": "ك",
+      "name": "كَاف",
+      "word": "كُرَة",
+      "image": "ball"
+    },
+    {
+      "letter": "ل",
+      "name": "لَام",
+      "word": "لَيْمُونَة",
+      "image": "lemon"
+    },
+    {
+      "letter": "م",
+      "name": "مِيم",
+      "word": "مَوْزَة",
+      "image": "banana"
+    },
+    {
+      "letter": "ن",
+      "name": "نُون",
+      "word": "نَجْمَة",
+      "image": "star"
+    },
+    {
+      "letter": "ه",
+      "name": "هَاء",
+      "word": "هِلَال",
+      "image": "crescent"
+    },
+    {
+      "letter": "و",
+      "name": "وَاو",
+      "word": "وَرْدَة",
+      "image": "flower"
+    },
+    {
+      "letter": "ي",
+      "name": "يَاء",
+      "word": "يَد",
+      "image": "hand"
+    }
+  ],
+  "numbers": [
+    "وَاحِد",
+    "اثْنَان",
+    "ثَلَاثَة",
+    "أَرْبَعَة",
+    "خَمْسَة",
+    "سِتَّة",
+    "سَبْعَة",
+    "ثَمَانِيَة",
+    "تِسْعَة",
+    "عَشَرَة"
+  ],
+  "lines": [
+    {
+      "key": "greeting",
+      "text": "أهلاً وسهلاً! أنا نبيه. اضغط على الأشياء في الغرفة لنلعب معاً."
+    },
+    {
+      "key": "hint_letters",
+      "text": "هيا نبدأ! اضغط على المكعب الأحمر لنتعلم الحروف والأرقام."
+    },
+    {
+      "key": "soon",
+      "text": "هذه اللعبة ستأتي قريباً إن شاء الله."
+    },
+    {
+      "key": "who_plays",
+      "text": "من يلعب الآن؟"
+    },
+    {
+      "key": "pick_letter",
+      "text": "اضغط على الحرف الذي تريد."
+    },
+    {
+      "key": "first_letter",
+      "text": "بأي حرف تبدأ هذه الكلمة؟"
+    },
+    {
+      "key": "pick_number",
+      "text": "اضغط على الرقم الذي تريد."
+    },
+    {
+      "key": "how_many",
+      "text": "كم عددها؟"
+    },
+    {
+      "key": "add",
+      "text": "اجمع. كم يصبح العدد؟"
+    },
+    {
+      "key": "subtract",
+      "text": "اطرح. كم يبقى؟"
+    },
+    {
+      "key": "praise_0",
+      "text": "أحسنت!"
+    },
+    {
+      "key": "praise_1",
+      "text": "ممتاز!"
+    },
+    {
+      "key": "praise_2",
+      "text": "رائع!"
+    },
+    {
+      "key": "praise_3",
+      "text": "أنت بطل!"
+    },
+    {
+      "key": "try_again",
+      "text": "حاول مرة أخرى."
+    },
+    {
+      "key": "well_done",
+      "text": "مبروك! لقد ربحت نجوماً جديدة."
+    }
+  ],
+  "ui": [
+    {
+      "key": "letters",
+      "text": "الحروف"
+    },
+    {
+      "key": "numbers",
+      "text": "الأرقام"
+    },
+    {
+      "key": "play",
+      "text": "العب"
+    },
+    {
+      "key": "numerals",
+      "text": "شكل الأرقام"
+    },
+    {
+      "key": "sound",
+      "text": "الصوت"
+    },
+    {
+      "key": "on",
+      "text": "مفعّل"
+    },
+    {
+      "key": "off",
+      "text": "متوقف"
+    },
+    {
+      "key": "reset",
+      "text": "مسح التقدم"
+    },
+    {
+      "key": "parents",
+      "text": "ركن الوالدين"
+    },
+    {
+      "key": "hold",
+      "text": "للوالدين: اضغط مطولاً ثلاث ثوانٍ"
+    },
+    {
+      "key": "count",
+      "text": "العدّ"
+    },
+    {
+      "key": "add_title",
+      "text": "الجمع"
+    },
+    {
+      "key": "sub_title",
+      "text": "الطرح"
+    },
+    {
+      "key": "soon_tag",
+      "text": "قريباً"
+    },
+    {
+      "key": "stars",
+      "text": "نجومك"
+    },
+    {
+      "key": "animals",
+      "text": "حيوانات مرحة"
+    },
+    {
+      "key": "math",
+      "text": "احسب والعب"
+    },
+    {
+      "key": "prayer",
+      "text": "تعلم الصلاة"
+    },
+    {
+      "key": "quiz",
+      "text": "اختبر معلوماتك"
+    },
+    {
+      "key": "words",
+      "text": "كلمات ومعاني"
+    },
+    {
+      "key": "submarine",
+      "text": "لعبة الغواصة"
+    }
+  ]
+}

@@ -37,5 +37,10 @@ __pycache__/
 /unity/.vs/
 /unity/.utmp/
 
+# Placeholder voice made with the macOS "say" voice: generated locally, not for redistribution.
+# Replaced by real recordings before release (docs/DESIGN.md, Q13).
+/unity/Assets/Resources/Voice/
+/unity/Assets/Resources/Voice.meta
+
 # Generated concept candidates that were not picked (picked ones are copied to art/concepts/<batch>/picked/)
 /art/concepts/*/raw/

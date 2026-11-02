@@ -32,8 +32,7 @@ namespace Usrah.EditorTools
         {
             if (!assetPath.StartsWith(ModelsPath)) return;
             // Names look like "vinyl_F6E9CF": the kit, then the exact sRGB colour
-            // Built by HomeSceneBuilder
-            if (material.name == "rug" || material.name == "lens") return;
+            if (material.name == "rug") return; // Built by HomeSceneBuilder, with its texture
             var parts = material.name.Split('_');
             var kind = parts[0];
             Color color = Color.white;
