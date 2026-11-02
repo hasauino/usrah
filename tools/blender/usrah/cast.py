@@ -81,7 +81,7 @@ def sara(kit, loc=(0, 0, 0), rot=(0, 0, 0), wave=True):
     trousers = kit.paint(SAGE)
     with group("sara", loc, rot) as root:
         for side, sign in (("l", -1), ("r", 1)):
-            with group(f"leg_{side}"):
+            with group(f"leg_{side}", pivot=(sign * .088, 0, .43)):
                 capsule(f"leg_{side}_mesh", (sign * .083, 0, .09), (sign * .088, 0, .43), .07, trousers, .082)
                 _joint(f"knee_{side}", (sign * .085, 0, .25), .075, kit, SARA_SKIN)
                 sphere(f"shoe_{side}", (.082, .122, .056), kit.paint(CREAM), (sign * .085, -.035, .052))
@@ -94,12 +94,12 @@ def sara(kit, loc=(0, 0, 0), rot=(0, 0, 0), wave=True):
         capsule("neck", (0, 0, .74), (0, 0, .82), .052, kit.skin(SARA_SKIN))
 
         # Arms: the right one relaxed, the left one waving
-        with group("arm_r"):
+        with group("arm_r", pivot=(.14, 0, .70)):
             capsule("arm_r_mesh", (.14, 0, .70), (.195, -.02, .46), .05, top, .045)
             _joint("shoulder_r", (.14, 0, .70), .056, kit, SARA_SKIN)
             ring("cuff_r", (.14, 0, .70), (.195, -.02, .46), .046, .008, trim)
             _hand("hand_r", (.2, -.022, .425), .052, kit, SARA_SKIN)
-        with group("arm_l"):
+        with group("arm_l", pivot=(-.14, 0, .70)):
             if wave:
                 capsule("arm_l_mesh", (-.14, 0, .70), (-.285, -.03, .86), .05, top, .045)
                 ring("cuff_l", (-.14, 0, .70), (-.285, -.03, .86), .046, .008, trim)
@@ -110,7 +110,7 @@ def sara(kit, loc=(0, 0, 0), rot=(0, 0, 0), wave=True):
                 _hand("hand_l", (-.2, -.022, .425), .052, kit, SARA_SKIN, thumb=(-.8, -.6, .35))
             _joint("shoulder_l", (-.14, 0, .70), .056, kit, SARA_SKIN)
 
-        with group("head"):
+        with group("head", pivot=(0, 0, .78)):
             center = (0, 0, 1.0)
             head = Surface(center, (.262, .248, .24))
             sphere("head_mesh", head.r, kit.skin(SARA_SKIN), center)
@@ -138,7 +138,7 @@ def yusuf(kit, loc=(0, 0, 0), rot=(0, 0, 0)):
     skin = kit.skin(YUSUF_SKIN)
     with group("yusuf", loc, rot) as root:
         for side, sign in (("l", -1), ("r", 1)):
-            with group(f"leg_{side}"):
+            with group(f"leg_{side}", pivot=(sign * .083, 0, .36)):
                 capsule(f"leg_{side}_mesh", (sign * .08, 0, .08), (sign * .08, 0, .28), .054, skin, .058)
                 _joint(f"knee_{side}", (sign * .08, 0, .185), .06, kit, YUSUF_SKIN)
                 capsule(f"short_{side}", (sign * .083, 0, .25), (sign * .083, 0, .36), .082, shorts, .088)
@@ -157,19 +157,19 @@ def yusuf(kit, loc=(0, 0, 0), rot=(0, 0, 0)):
                      0, 2, lift=-.002)
         capsule("neck", (0, 0, .57), (0, 0, .63), .045, skin)
 
-        with group("arm_r"):
+        with group("arm_r", pivot=(.135, 0, .54)):
             # Fist pumped up
             capsule("sleeve_r", (.135, 0, .54), (.2, -.01, .47), .05, shirt, .05)
             _joint("shoulder_r", (.135, 0, .54), .05, kit, YUSUF_SKIN)
             capsule("arm_r_mesh", (.2, -.01, .47), (.25, -.03, .62), .04, skin, .038)
             _hand("hand_r", (.26, -.035, .67), .053, kit, YUSUF_SKIN, thumb=(-.7, -.6, .1))
-        with group("arm_l"):
+        with group("arm_l", pivot=(-.135, 0, .54)):
             capsule("sleeve_l", (-.135, 0, .54), (-.178, -.01, .45), .05, shirt, .05)
             _joint("shoulder_l", (-.135, 0, .54), .05, kit, YUSUF_SKIN)
             capsule("arm_l_mesh", (-.178, -.01, .45), (-.19, -.02, .33), .04, skin, .038)
             _hand("hand_l", (-.195, -.022, .29), .05, kit, YUSUF_SKIN, thumb=(-.8, -.6, .35))
 
-        with group("head"):
+        with group("head", pivot=(0, 0, .59)):
             center = (0, 0, .79)
             head = Surface(center, (.248, .235, .226))
             sphere("head_mesh", head.r, skin, center)
@@ -195,7 +195,7 @@ def nabeeh(kit, loc=(0, 0, 0), rot=(0, 0, 0), face="painted", pose="stand", book
     body_z = .24 if not sit else .13
     with group("nabeeh", loc, rot) as root:
         for side, sign in (("l", -1), ("r", 1)):
-            with group(f"leg_{side}"):
+            with group(f"leg_{side}", pivot=(sign * .07, 0, body_z - .1)):
                 if sit:
                     capsule(f"leg_{side}_mesh", (sign * .075, -.05, .06), (sign * .09, -.2, .03), .035, joint, .03)
                     foot = (sign * .1, -.262, -.032)
@@ -226,7 +226,7 @@ def nabeeh(kit, loc=(0, 0, 0), rot=(0, 0, 0), face="painted", pose="stand", book
         capsule("neck", (0, 0, body_z + .13), (0, 0, body_z + .18), .05, joint)
 
         head_z = body_z + .325
-        with group("head", (0, 0, 0)):
+        with group("head", pivot=(0, 0, head_z - .15)):
             center = (0, 0, head_z)
             head = Surface(center, .185)
             sphere("head_mesh", .185, shell, center)
@@ -277,7 +277,7 @@ def nabeeh(kit, loc=(0, 0, 0), rot=(0, 0, 0), face="painted", pose="stand", book
 
         # Arms with white mitten hands
         for side, sign in (("l", -1), ("r", 1)):
-            with group(f"arm_{side}"):
+            with group(f"arm_{side}", pivot=(sign * .15, -.005, body_z + .045)):
                 shoulder = (sign * .15, -.005, body_z + .045)
                 sphere(f"shoulder_{side}", .036, joint, shoulder)
                 if sit and book:

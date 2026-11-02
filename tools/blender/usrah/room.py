@@ -8,7 +8,7 @@ from pathlib import Path
 
 import bpy
 
-from . import cast, stage
+from . import cast, rug_art, stage
 from .materials import linear
 from .shapes import (cyl, glyph, group, lathe, poly, rbox, sphere, star_points, torus,
                      tube)
@@ -49,6 +49,12 @@ def floor(px, py):
     """(x, y) on the floor for a layout pixel."""
     d = FOCAL_PX * CAM_H / (py - HORIZON_PX)
     return (px - 800) * d / FOCAL_PX, BACK_Y - CAM_DIST + d
+
+
+# Where the characters sit in the room: (location, rotation)
+HOST_SPOT = ((floor(1185, 790)[0], floor(1185, 790)[1] - .04, .34 + .075), (0, 0, -8))
+HOST_SCALE = 1.15
+CAT_SPOT = ((max(floor(290, 650)[0], -WIDTH / 2 + .55), min(floor(290, 650)[1], 2.5), .17), (0, 0, -20))
 
 
 def _shell(kit):
@@ -453,18 +459,11 @@ def _door(kit):
 
 def _rug(kit):
     x, y = floor(800, 745)
-    with group("rug", (x, y, 0)):
-        rings = ((1.62, 1.1, TERRACOTTA), (1.52, 1.02, CREAM), (1.42, .94, SAGE if kit.wood else "#6E9D6D"),
-                 (1.0, .66, CREAM), (.92, .6, TERRACOTTA))
-        for i, (rx, ry, color) in enumerate(rings):
-            sphere(f"rug_{i}", (rx, ry, .012 + i * .001), kit.cloth(color), (0, 0, .006 + i * .0015), seg=64)
-        star_mat = kit.cloth(SUN)
-        for i in range(8):
-            a = math.pi * 2 * i / 8 + math.pi / 8
-            poly(f"rug_star_{i}", star_points(8, .1, .065), .006, star_mat,
-                 (math.cos(a) * 1.2, math.sin(a) * .8, .022), bevel=.002)
-        poly("rug_center", star_points(8, .4, .26), .006, kit.cloth(CREAM), (0, 0, .024), bevel=.002)
-        poly("rug_center_2", star_points(8, .2, .13), .006, kit.cloth(TEAL), (0, 0, .03), bevel=.002)
+    outline = [(rug_art.RX * math.cos(2 * math.pi * k / 128), rug_art.RY * math.sin(2 * math.pi * k / 128))
+               for k in range(128)]
+    with group("rug_group", (x, y, 0)):
+        rug = poly("rug", outline, .014, rug_art.material(), (0, 0, .001), bevel=.004)
+    rug_art.add_uvs(rug)
 
 
 def _low_table(kit):
@@ -515,7 +514,7 @@ def _camel(kit, table):
         tube("tail", [(.15, 0, .21), (.185, 0, .17), (.19, 0, .12)], .009, dark)
 
 
-def _majlis(kit):
+def _majlis(kit, characters=True):
     """The floor seating corner, against the left wall."""
     y0, y1 = 1.35, 3.25
     x_wall = -WIDTH / 2
@@ -530,8 +529,8 @@ def _majlis(kit):
             torus(f"bolster_trim_{sign}", .09, .012, kit.paint(TERRACOTTA), (xx, 1.42, .28), (0, 90, 0), seg=32, tube_seg=8)
 
     # Cat napping on the seat, facing into the room
-    cx, cy = floor(290, 650)
-    cast.cat(kit, (max(cx, x_wall + .55), min(cy, 2.5), .17), (0, 0, -20), pose="sleep")
+    if characters:
+        cast.cat(kit, *CAT_SPOT, pose="sleep")
 
     # Tray with dallah
     tx, ty = floor(450, 680)
@@ -553,7 +552,7 @@ def _dallah(kit, x, y, z):
         tube("dallah_handle", [(.055, 0, .22), (.13, 0, .24), (.145, 0, .13), (.09, 0, .07)], .011, brass)
 
 
-def _bench(kit, ckit):
+def _bench(kit, ckit, characters=True):
     x, y = floor(1185, 790)
     wood = kit.natural(HONEY)
     h = .34
@@ -568,8 +567,9 @@ def _bench(kit, ckit):
         for sign in (-1, 1):
             rbox(f"armrest_{sign}", (.05, .36, .04), .018, wood, (sign * .49, .02, h + .19))
             rbox(f"armpost_{sign}", (.04, .04, .19), .012, wood, (sign * .49, -.13, h + .1))
-    host = cast.nabeeh(ckit, (x, y - .04, h + .075), (0, 0, -8), pose="sit")
-    host.scale = (1.15, 1.15, 1.15)
+    if characters:
+        host = cast.nabeeh(ckit, *HOST_SPOT, pose="sit")
+        host.scale = (HOST_SCALE,) * 3
 
 
 def _side_decor(kit):
@@ -595,7 +595,9 @@ def _lights(kit):
     stage.area_light("front", (-2.0, -3.6, 1.8), (.4, 2.5, .9), (4, 3), 60, "#FFF1E0")
 
 
-def build(ckit, rkit):
+def build(ckit, rkit, characters=True, lights=True):
+    """The whole room. The game export leaves out characters and lights: characters animate
+    as their own models, placed at HOST_SPOT and CAT_SPOT, and Unity has its own lights."""
     _shell(rkit)
     _window(rkit)
     _family_photo(rkit)
@@ -609,10 +611,16 @@ def build(ckit, rkit):
     table = _low_table(rkit)
     _letter_cube(rkit, table)
     _camel(rkit, table)
-    _majlis(rkit)
-    _bench(rkit, ckit)
+    _majlis(rkit, characters)
+    _bench(rkit, ckit, characters)
     _side_decor(rkit)
-    _lights(rkit)
+    if lights:
+        _lights(rkit)
+    if not characters:
+        with group("spot_host", *HOST_SPOT) as spot:
+            spot.scale = (HOST_SCALE,) * 3
+        with group("spot_cat", *CAT_SPOT):
+            pass
     # Lens shift puts the horizon at HORIZON_PX while verticals stay straight
     cam_y = BACK_Y - CAM_DIST
     shift = -(450 - HORIZON_PX) / PX_W

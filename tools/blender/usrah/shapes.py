@@ -12,6 +12,14 @@ import bpy
 from mathutils import Euler, Quaternion, Vector
 
 _parents = []
+_offsets = []  # Per parent: world-style point its children's coordinates are measured from
+
+# Mesh density. 1.0 is for renders; game exports use less. Multiplies circle segments.
+detail = 1.0
+
+
+def _seg(n):
+    return max(6, int(n * detail) // 2 * 2)
 
 
 def clear_scene():
@@ -20,22 +28,28 @@ def clear_scene():
 
 
 @contextmanager
-def group(name, loc=(0, 0, 0), rot=(0, 0, 0)):
-    """Parent everything created in the block to a new empty."""
+def group(name, loc=(0, 0, 0), rot=(0, 0, 0), pivot=None):
+    """Parent everything created in the block to a new empty.
+
+    With `pivot` the empty sits at that point (a joint, in the same coordinates the parts
+    use) while the parts keep their positions, so the group rotates around the joint.
+    """
     empty = bpy.data.objects.new(name, None)
-    _link(empty, loc, rot)
+    _link(empty, pivot if pivot else loc, rot)
     _parents.append(empty)
+    _offsets.append(Vector(pivot) if pivot else Vector())
     try:
         yield empty
     finally:
         _parents.pop()
+        _offsets.pop()
 
 
 def _link(ob, loc, rot):
     bpy.context.collection.objects.link(ob)
     if _parents:
         ob.parent = _parents[-1]
-    ob.location = loc
+    ob.location = Vector(loc) - (_offsets[-1] if _offsets else Vector())
     if isinstance(rot, Quaternion):
         ob.rotation_mode = "QUATERNION"
         ob.rotation_quaternion = rot
@@ -65,7 +79,8 @@ def sphere(name, r, mat, loc=(0, 0, 0), rot=(0, 0, 0), clip=None, seg=48):
     """Ellipsoid. `clip` = (plane_co, plane_no), in the same space as `loc`, removes the
     side the normal points at."""
     bm = bmesh.new()
-    bmesh.ops.create_uvsphere(bm, u_segments=seg, v_segments=seg * 2 // 3, radius=1)
+    seg = _seg(seg)
+    bmesh.ops.create_uvsphere(bm, u_segments=seg, v_segments=max(4, seg * 2 // 3), radius=1)
     rx, ry, rz = _radii(r)
     for v in bm.verts:
         v.co = Vector((v.co.x * rx, v.co.y * ry, v.co.z * rz))
@@ -82,7 +97,7 @@ def rbox(name, size, r, mat, loc=(0, 0, 0), rot=(0, 0, 0), seg=4):
     bmesh.ops.create_cube(bm, size=1)
     for v in bm.verts:
         v.co = Vector((v.co.x * size[0], v.co.y * size[1], v.co.z * size[2]))
-    bmesh.ops.bevel(bm, geom=bm.verts[:] + bm.edges[:], offset=r, segments=seg,
+    bmesh.ops.bevel(bm, geom=bm.verts[:] + bm.edges[:], offset=r, segments=max(1, round(seg * detail)),
                     profile=0.5, affect="EDGES", clamp_overlap=True)
     return _finish(name, bm, mat, loc, rot, weighted=True)
 
@@ -102,6 +117,8 @@ def chaikin(points, iterations=2):
 def lathe(name, profile, mat, loc=(0, 0, 0), rot=(0, 0, 0), seg=48, smooth=2):
     """Spin a (radius, z) profile, bottom to top, around Z. Like a turned wooden toy."""
     profile = chaikin(profile, smooth) if smooth else profile
+    # A 4-sided lathe is a deliberate pyramid, so it keeps its sides
+    seg = seg if seg <= 8 else _seg(seg)
     bm = bmesh.new()
     rings = []
     for pr, pz in profile:
@@ -133,6 +150,7 @@ def cyl(name, r, h, mat, loc=(0, 0, 0), rot=(0, 0, 0), bevel=None, seg=48):
 
 
 def torus(name, major, minor, mat, loc=(0, 0, 0), rot=(0, 0, 0), seg=64, tube_seg=16):
+    seg, tube_seg = _seg(seg), _seg(tube_seg)
     bm = bmesh.new()
     rings = []
     for i in range(seg):
@@ -162,8 +180,8 @@ def tube(name, points, radius, mat, loc=(0, 0, 0), rot=(0, 0, 0), caps=True):
     curve = bpy.data.curves.new(name, "CURVE")
     curve.dimensions = "3D"
     curve.bevel_depth = 1
-    curve.bevel_resolution = 6
-    curve.resolution_u = 18
+    curve.bevel_resolution = max(1, int(6 * detail))
+    curve.resolution_u = max(3, int(18 * detail))
     curve.use_fill_caps = True
     spline = curve.splines.new("BEZIER")
     spline.bezier_points.add(len(points) - 1)
@@ -176,10 +194,13 @@ def tube(name, points, radius, mat, loc=(0, 0, 0), rot=(0, 0, 0), caps=True):
         curve.materials.append(mat)
     ob = _link(bpy.data.objects.new(name, curve), loc, rot)
     if caps:
+        # The caps use the tube's own space, which is where its points are
         _parents.append(ob)
+        _offsets.append(Vector())
         sphere(name + "_a", radii[0], mat, points[0], seg=24)
         sphere(name + "_b", radii[-1], mat, points[-1], seg=24)
         _parents.pop()
+        _offsets.pop()
     return ob
 
 
@@ -191,7 +212,7 @@ def capsule(name, a, b, r, mat, r2=None):
     half = (b - a).length / 2
     rot = Vector((0, 0, 1)).rotation_difference((b - a).normalized())
     bm = bmesh.new()
-    bmesh.ops.create_uvsphere(bm, u_segments=32, v_segments=24, radius=1)
+    bmesh.ops.create_uvsphere(bm, u_segments=_seg(32), v_segments=max(4, _seg(24)), radius=1)
     for v in bm.verts:
         rad = r2 if v.co.z >= 0 else r
         v.co = Vector((v.co.x * rad, v.co.y * rad,
