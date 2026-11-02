@@ -114,6 +114,6 @@ The four stand side by side. Sara is tallest, Yusuf is about 80% of her height, 
 3. The kids and the cat: are the proportions and outfits right?
 4. The room: does the mood, density and palette feel like "home"?
 
-## Prompt conventions (for `tools/concepts`)
+## How the concepts are made
 
-Every prompt is composed as **[style block for a/b/c] + [subject block] + [shared constraints block]**. The shared constraints repeat the hard rules: simple rounded primitives, flat graphic faces, no text, a clean background for character sheets, and a soft studio or room light.
+Batch 1 is rendered from the scripted Blender models with `tools/blender/render_batch.sh`. Style directions are material kits (`tools/blender/usrah/materials.py`), so a style change never touches model code. The "no text" rule above only applied to image models: single Arabic glyphs can be modelled directly, as on the letter cube.

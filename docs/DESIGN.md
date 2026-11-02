@@ -38,9 +38,9 @@ Decided in the design interview, 2026-10-25 to 2026-10-29.
 | Q17 | Setting | A contemporary Arab family home with tasteful cultural cues (mashrabiya, majlis cushions, dallah, calligraphy, Arabic books). |
 | Q16 | Style exploration | (a) soft vinyl toy, (b) wooden toy / Montessori, (c) a mix: vinyl characters in a wooden dollhouse room. |
 | Q7 | Pipeline | Asset first: **concepts → Blender → Unity**. |
-| Q8 | Concepts | AI image model (Gemini) driven by a written visual brief, plus a vector room-layout sketch (exact hotspot placement). |
-| Q19 | Image API | Gemini API key in a local `.env`. Claude generates and iterates. |
-| Q26 | Review | One review page per concept batch. Picked images are committed to `art/concepts/<batch>/picked/`. |
+| Q8 | Concepts | **Changed 2026-11-02:** concepts are Cycles renders of the scripted Blender models (`tools/blender/`), plus a vector room-layout sketch. Originally an AI image model, dropped because Gemini's API needs prepaid credit (no free-tier image generation). Everything approved is buildable by construction. |
+| Q19 | Image API | **Not used.** `tools/concepts/generate.py` and `art/concepts/batch-01/prompts.json` stay in the repo in case paid image generation is wanted later. |
+| Q26 | Review | One review page per concept batch. Picked images are committed to `art/concepts/<batch>/picked/`. Batch 1: https://claude.ai/artifact/D4zSYS9Yf6cRSnfYxsXT2s |
 | Q10 | Modelling | Claude builds **all** models (props, environment and characters) with Blender Python scripts, renders them and checks the renders. |
 | Q22 | Rigs | Rigid, segmented, toy-like parts on a simple armature (no skin deformation). Faces are swappable eye and mouth textures. Mouth shapes drive lip movement. A shared animation clip library (idle, wave, cheer, think, point, walk, sit, roll-in). |
 
