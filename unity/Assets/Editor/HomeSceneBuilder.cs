@@ -75,6 +75,23 @@ namespace Usrah.EditorTools
             }
         }
 
+        /// <summary>See-through glasses lens: nearly clear, with a soft highlight.</summary>
+        static Material LensMaterial()
+        {
+            var lens = SavedMaterial("lens", "Universal Render Pipeline/Lit", new Color(1f, 1f, 1f, .12f));
+            lens.SetFloat("_Surface", 1f);
+            lens.SetFloat("_Blend", 0f);
+            lens.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            lens.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            lens.SetFloat("_ZWrite", 0f);
+            lens.SetFloat("_Smoothness", .9f);
+            lens.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            lens.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            lens.SetOverrideTag("RenderType", "Transparent");
+            EditorUtility.SetDirty(lens);
+            return lens;
+        }
+
         static Material SavedMaterial(string name, string shader, Color? color)
         {
             var path = Materials + name + ".mat";
@@ -99,6 +116,12 @@ namespace Usrah.EditorTools
             character.name = model;
             character.transform.SetParent(holder, false);
             foreach (var t in character.GetComponentsInChildren<Transform>()) t.gameObject.layer = CharacterLayer;
+            foreach (var renderer in character.GetComponentsInChildren<Renderer>())
+                if (renderer.sharedMaterial != null && renderer.sharedMaterial.name == "lens")
+                {
+                    renderer.sharedMaterial = LensMaterial();
+                    renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                }
         }
 
         static void Report(GameObject room)
@@ -139,7 +162,7 @@ namespace Usrah.EditorTools
             // The room is lightmapped: sky and bounce come from the bake. Characters aren't static,
             // so they get this same ambient plus their own soft key light (see below).
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
-            RenderSettings.ambientLight = new Color(.78f, .74f, .68f);
+            RenderSettings.ambientLight = new Color(.66f, .63f, .58f);
 
             var sun = new GameObject("Sun").AddComponent<Light>();
             sun.type = LightType.Directional;
@@ -186,7 +209,7 @@ namespace Usrah.EditorTools
             key.type = LightType.Directional;
             key.lightmapBakeType = LightmapBakeType.Realtime;
             key.color = new Color32(0xFF, 0xF3, 0xE2, 0xFF);
-            key.intensity = .9f;
+            key.intensity = .62f;
             key.shadows = LightShadows.None;
             key.cullingMask = 1 << CharacterLayer;
             key.transform.rotation = Quaternion.LookRotation(new Vector3(.35f, -.7f, .6f));

@@ -1,0 +1,15 @@
+{
+  "batch": "batch-02",
+  "goal": "A higher-quality target for one character (نبيه), to guide a better Blender model. See docs/art/visual-brief.md.",
+  "blocks": {
+    "identity": "The attached image is the current 3D model of NABEEH, the small friendly robot host of an Arabic children's learning game. Keep his identity exactly: big round pale head on a round ball body, sky-blue baseball cap with a small sunflower-yellow eight-point star, big round dark-framed glasses, painted friendly eyes and a small smile, a keypad of 3x3 pastel buttons on his chest, short arms with white mitten hands, blue-and-white sneakers, a small red book. Same proportions, same colours, same cheerful personality.",
+    "quality": "Re-imagine him as a premium collectible designer-toy character from a top animation studio's feature film: beautifully sculpted appealing forms, subtle asymmetry in the pose, soft satin vinyl with gentle subsurface glow, crisp panel seams and tiny well-designed details (stitching on the cap, moulded rubber sneaker soles with laces, rounded keypad buttons with soft bevels, real glass lenses in the glasses, a hardcover book with a ribbon). Warm soft studio lighting, soft contact shadow, gentle ambient occlusion, clean warm cream background. Still simple enough to build from rounded shapes: no fine wrinkles, no realistic skin or scratches.",
+    "hero": "COMPOSITION: full body, three-quarter view, standing, waving with one hand and holding the red book under the other arm. Centred, plenty of margin.",
+    "front": "COMPOSITION: full body, straight-on front view, relaxed standing pose, arms slightly away from the body so every shape reads clearly. Centred, plenty of margin. Plain background, like a model sheet.",
+    "constraints": "No text, letters, numbers, logos or watermarks anywhere."
+  },
+  "jobs": [
+    { "id": "nabeeh-hero", "compose": ["identity", "quality", "hero", "constraints"], "aspect": "1:1", "refs": ["refs/nabeeh-current.png"], "count": 2 },
+    { "id": "nabeeh-front", "compose": ["identity", "quality", "front", "constraints"], "aspect": "1:1", "refs": ["refs/nabeeh-current.png"], "count": 1 }
+  ]
+}

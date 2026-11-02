@@ -39,7 +39,7 @@ Decided in the design interview, 2026-10-25 to 2026-10-29.
 | Q16 | Style | **Locked 2026-11-02: soft vinyl everywhere** (direction A, the `Vinyl` kit), chosen from renders in the batch 1 review. |
 | Q7 | Pipeline | Asset first: **concepts → Blender → Unity**. |
 | Q8 | Concepts | **Changed 2026-11-02:** concepts are Cycles renders of the scripted Blender models (`tools/blender/`), plus a vector room-layout sketch. Originally an AI image model, dropped because Gemini's API needs prepaid credit (no free-tier image generation). Everything approved is buildable by construction. |
-| Q19 | Image API | **Not used.** `tools/concepts/generate.py` and `art/concepts/batch-01/prompts.json` stay in the repo in case paid image generation is wanted later. |
+| Q19 | Image API | **Trial 2026-11-02:** paid Gemini (`gemini-3-pro-image`, via `tools/concepts/generate.py`) made target images for one character (`art/concepts/batch-02`). It produces pictures only; the 3D model is still built by script to match. Whether to do this for the rest of the cast is undecided. |
 | Q26 | Review | One review page per concept batch. Picked images are committed to `art/concepts/<batch>/picked/`. Batch 1: https://claude.ai/artifact/D4zSYS9Yf6cRSnfYxsXT2s |
 | Q10 | Modelling | Claude builds **all** models (props, environment and characters) with Blender Python scripts, renders them and checks the renders. |
 | Q22 | Rigs | Rigid, segmented, toy-like parts on a simple armature (no skin deformation). Faces are swappable eye and mouth textures. Mouth shapes drive lip movement. A shared animation clip library (idle, wave, cheer, think, point, walk, sit, roll-in). |
