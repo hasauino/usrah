@@ -2,6 +2,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Usrah.EditorTools
 {
@@ -12,6 +13,10 @@ namespace Usrah.EditorTools
         [MenuItem("Usrah/Build Web")]
         public static void Build()
         {
+            // The URP template leaves this empty, and then the build strips URP's shaders
+            GraphicsSettings.defaultRenderPipeline =
+                AssetDatabase.LoadAssetAtPath<RenderPipelineAsset>("Assets/Settings/Mobile_RPAsset.asset");
+
             PlayerSettings.companyName = "Usrah";
             PlayerSettings.productName = "Usrah";
             // A new version per build, so the PWA's service worker replaces its cache

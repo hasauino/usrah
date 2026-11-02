@@ -28,6 +28,7 @@ __pycache__/
 /unity/[Bb]uild/
 /unity/[Bb]uilds/
 /unity/[Ll]ogs/
+/unity/Data/
 /unity/[Uu]ser[Ss]ettings/
 /unity/[Mm]emoryCaptures/
 /unity/*.csproj
